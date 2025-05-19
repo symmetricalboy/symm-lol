@@ -7,6 +7,10 @@ const port = process.env.PORT || 4173;
 app.use((req, res, next) => {
   // Set Content-Security-Policy header
   res.setHeader("Content-Security-Policy", "upgrade-insecure-requests");
+  
+  // Set HSTS header with stronger configuration
+  res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
+  
   next();
 });
 
