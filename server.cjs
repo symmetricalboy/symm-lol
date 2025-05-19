@@ -8,7 +8,7 @@ app.use((req, res, next) => {
   // Set Content-Security-Policy header
   res.setHeader("Content-Security-Policy", "upgrade-insecure-requests");
   
-  // Set HSTS header with stronger configuration
+  // Set HSTS header with complete configuration including preload
   res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
   
   next();
