@@ -5,11 +5,22 @@ const port = process.env.PORT || 4173;
 
 // Add middleware to set security headers
 app.use((req, res, next) => {
-  // Set Content-Security-Policy header
-  res.setHeader("Content-Security-Policy", "upgrade-insecure-requests");
+  // Set Content-Security-Policy header with comprehensive directives
+  res.setHeader("Content-Security-Policy", "default-src https:; connect-src https:; img-src https: data:; media-src https:; object-src 'none'; script-src https:; style-src https:; upgrade-insecure-requests;");
   
-  // Set HSTS header with complete configuration including preload
+  // Set HSTS header with stronger configuration
   res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
+  
+  // Additional security headers
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  res.setHeader("Referrer-Policy", "no-referrer-when-downgrade");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  
+  // Force HTTPS for all connections
+  if (req.headers['x-forwarded-proto'] !== 'https' && process.env.NODE_ENV === 'production') {
+    return res.redirect(`https://${req.headers.host}${req.url}`);
+  }
   
   next();
 });
