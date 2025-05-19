@@ -1,5 +1,13 @@
 const CLEARSKY_API_BASE = 'https://api.clearsky.services/api/v1/anon';
 const ATPROTO_API_BASE = 'https://bsky.social/xrpc';
+// Wrap external API calls with CORS proxy if needed
+const corsProxy = (url) => {
+  // In production use HTTPS
+  if (url.startsWith('http://')) {
+    return url.replace('http://', 'https://');
+  }
+  return url;
+};
 
 // Known handles for popular accounts
 const KNOWN_HANDLES = {
@@ -71,7 +79,7 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
  */
 async function fetchHandleFromDid(did) {
   try {
-    const response = await fetch(`${CLEARSKY_API_BASE}/get-handle/${did}`);
+    const response = await fetch(corsProxy(`${CLEARSKY_API_BASE}/get-handle/${did}`));
     
     if (response.ok) {
       const data = await response.json();
@@ -81,7 +89,7 @@ async function fetchHandleFromDid(did) {
     }
     
     // Fallback to ATProto API if Clearsky API fails
-    const atprotoResponse = await fetch(`${ATPROTO_API_BASE}/com.atproto.identity.resolveHandle?handle=${did}`);
+    const atprotoResponse = await fetch(corsProxy(`${ATPROTO_API_BASE}/com.atproto.identity.resolveHandle?handle=${did}`));
     if (atprotoResponse.ok) {
       const atprotoData = await atprotoResponse.json();
       if (atprotoData && atprotoData.did === did) {
@@ -90,7 +98,7 @@ async function fetchHandleFromDid(did) {
     }
     
     // Second fallback to try a direct DID resolution
-    const didResponse = await fetch(`${ATPROTO_API_BASE}/com.atproto.repo.describeRepo?repo=${did}`);
+    const didResponse = await fetch(corsProxy(`${ATPROTO_API_BASE}/com.atproto.repo.describeRepo?repo=${did}`));
     if (didResponse.ok) {
       const didData = await didResponse.json();
       if (didData && didData.handle) {
@@ -113,7 +121,7 @@ async function fetchHandleFromDid(did) {
  */
 export async function fetchBlockerCount(did) {
   try {
-    const response = await fetch(`${CLEARSKY_API_BASE}/single-blocklist/total/${did}`);
+    const response = await fetch(corsProxy(`${CLEARSKY_API_BASE}/single-blocklist/total/${did}`));
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status} for DID ${did}`);
@@ -152,7 +160,7 @@ export async function fetchTopBlockedAccounts(limit = 20) {
     console.log("Attempting to fetch top blocked accounts...");
     
     // Use the correct endpoint from the API documentation
-    const response = await fetch(`${CLEARSKY_API_BASE}/lists/fun-facts`);
+    const response = await fetch(corsProxy(`${CLEARSKY_API_BASE}/lists/fun-facts`));
     
     if (!response.ok) {
       throw new Error(`API returned ${response.status}`);
