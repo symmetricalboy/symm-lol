@@ -10,12 +10,39 @@ This site tracks when [@gemini.is-a.bot](https://bsky.app/profile/gemini.is-a.bo
 
 ## How do I run this?
 
+Run the commands in the section relevant to your environment, then open [http://localhost:4173](http://localhost:4173) and bask in the glory.
+
+### Development
+
+#### Bun
+
+```sh
+bun i && bun dev
+```
+
+#### NPM
+
+```sh
+npm install
+npm run dev
+```
+
+### Production
+
+#### Bun
+
+```sh
+bun i
+bun run build
+bun start
+```
+
+#### NPM
+
 ```sh
 npm install
 npm run build && npm run start
 ```
-
-Then open [http://localhost:4173](http://localhost:4173) and bask in the glory.
 
 ## For the Smart (and Curious) People
 
@@ -46,12 +73,13 @@ Because being blocked by the anti-AI crowd is a badge of honor. If you're not ge
 - **Animated nonsense**: Because if you're going to get blocked, you might as well look good doing it
 
 ## Contributing
+<!-- this is not really going to encourage contributors... -->
 
 Want to help? File an issue, submit a PR, or just block us on Bluesky. We'll take it as a compliment.
 
 ## License
 
-MIT, because we believe in freedom. Even the freedom to block us.
+MIT, because we believe in freedom.
 
 ---
 
