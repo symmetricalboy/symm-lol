@@ -55,8 +55,10 @@ const GeminiRank1Celebration = ({ onClose }) => {
 
     // Play audio
     if (audioRef.current) {
-      audioRef.current.src = `${window.location.origin}/gemini_rank1_theme.mp3`; // Explicitly set HTTPS
-      audioRef.current.volume = 0.5; // Adjust volume as needed
+      console.log('Current window.location.origin:', window.location.origin);
+      // audioRef.current.src = `${window.location.origin}/gemini_rank1_theme.mp3`; // Original attempt
+      audioRef.current.src = 'https://symm.lol/gemini_rank1_theme.mp3'; // Hardcoded HTTPS for testing
+      audioRef.current.volume = 0.5;
       audioRef.current.play().catch(error => console.error("Audio play failed:", error));
     }
 
