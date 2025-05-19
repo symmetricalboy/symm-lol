@@ -226,6 +226,16 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
+  // Control debug UI visibility via URL parameter
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('debug') === 'yeh') {
+      setIsDebugModeActive(true);
+    } else {
+      setIsDebugModeActive(false); // Ensure it's hidden if param not present
+    }
+  }, []); // Empty dependency array ensures this runs only once on mount
+
   const simulateGeminiRankUp = () => {
     console.log("[Simulate] Button clicked. Current geminiRank (state):", geminiRank, "TopBlocked length:", topBlocked.length);
     if (!topBlocked.length || typeof geminiRank !== 'number') {
@@ -327,7 +337,7 @@ function App() {
         
         {/* Main content */}
         <main className="w-full max-w-7xl mx-auto flex-grow">
-          {/*
+          {/* START UNCOMMENTING DEBUG UI */}
           {isDebugModeActive && (
             <div className="fixed top-4 right-4 z-50 flex flex-col gap-2 items-end">
               <div className="bg-yellow-500/80 backdrop-blur-sm text-black p-3 rounded-lg shadow-xl">
@@ -338,14 +348,14 @@ function App() {
                   disabled={geminiRank === null}
                   title={geminiRank === null ? "Gemini needs to be in the top accounts list to simulate rank up." : "Simulate Gemini ranking up"}
                 >
-                  Simulate Gemini Rank Up
+                  TEST _ CUT THE LINE
                 </button>
                 <button
                   onClick={simulateGeminiRank1}
                   className="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold py-1.5 px-3 rounded-md transition-colors duration-150 w-full shadow-md mt-2"
                   title="Simulate Gemini reaching #1!"
                 >
-                  Simulate Gemini #1
+                  TEST _ END CREDITS
                 </button>
                 <button
                   onClick={() => { 
@@ -355,21 +365,12 @@ function App() {
                   }}
                   className="bg-green-600 hover:bg-green-700 text-white text-xs font-semibold py-1.5 px-3 rounded-md transition-colors duration-150 w-full shadow-md mt-2"
                 >
-                  Test Rank Up Celeb
+                  TEST _ 365 PARTY GIRL
                 </button>
               </div>
             </div>
           )}
-          */}
-
-          {/*
-          <button 
-            onClick={() => setIsDebugModeActive(!isDebugModeActive)}
-            className="fixed bottom-4 left-4 bg-gray-700 hover:bg-gray-600 text-white text-xs py-1 px-2 rounded-md z-50 shadow-lg"
-          >
-            {isDebugModeActive ? 'Exit Debug' : 'Debug'}
-          </button>
-          */}
+          {/* END UNCOMMENTING DEBUG UI */}
 
           {error ? (
             <motion.div 
