@@ -56,7 +56,11 @@ const GeminiRank1Celebration = ({ onClose }) => {
     // Play audio
     if (audioRef.current) {
       console.log('Current window.location.origin:', window.location.origin);
-      audioRef.current.src = `${window.location.origin}/gemini_rank1_theme.mp3`; // Reverted to dynamic origin
+      // Ensure the URL always starts with https:// 
+      const origin = window.location.origin.startsWith('https') 
+        ? window.location.origin 
+        : window.location.origin.replace('http://', 'https://');
+      audioRef.current.src = `${origin}/gemini_rank1_theme.mp3`;
       audioRef.current.volume = 0.5;
       audioRef.current.play().catch(error => console.error("Audio play failed:", error));
     }
