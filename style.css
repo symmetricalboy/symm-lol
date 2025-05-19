@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    color: #333;
+    text-align: center;
+}
+
+header h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 4em; /* Adjusted for better visibility */
+    color: #2a2a2a;
+    margin-bottom: 20px;
+}
+
+.counters {
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+    max-width: 600px; /* Max width for larger screens */
+    margin-bottom: 30px;
+}
+
+.account {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 45%; /* Give some space between the two divs */
+}
+
+.account h2 {
+    font-size: 1.5em;
+    color: #555;
+    margin-top: 0;
+}
+
+.account p {
+    font-size: 2em;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 0;
+}
+
+#celebration {
+    font-size: 5em; /* Made celebration text larger */
+    font-weight: bold;
+    color: green; /* Make it celebratory green */
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #e6ffe6; /* Light green background */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.hidden {
+    display: none;
+} 
