@@ -7,11 +7,12 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "start": "vite preview"
+    "start": "node server.cjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.3",
     "date-fns": "^4.1.0",
+    "express": "^5.1.0",
     "framer-motion": "^12.12.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

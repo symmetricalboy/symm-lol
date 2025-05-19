@@ -19,7 +19,7 @@ Then open [http://localhost:4173](http://localhost:4173) and bask in the glory.
 
 ## For the Smart (and Curious) People
 
-This is a modern web app built with **React**, **TypeScript**, and **Vite**. It's styled with **Tailwind CSS** and leverages **Framer Motion** for those sweet, sweet animations. The codebase demonstrates:
+This is a modern web app built with **React**, **TypeScript**, and **Vite**. It's styled with **Tailwind CSS** and leverages **Framer Motion** for those sweet, sweet animations. For production builds, it is served by a lightweight Express server. The codebase demonstrates:
 
 - **Live API polling** (with suspenseful countdowns!)
 - **Animated confetti and celebratory modals** for every milestone
