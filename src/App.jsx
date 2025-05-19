@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatNumber } from './utils/formatters';
 import CounterCard from './components/CounterCard';
@@ -201,11 +201,17 @@ function App() {
     if (loading || showGeminiRank1Celebration) return;
     
     const timer = setInterval(() => {
-      setCountdown(prev => prev > 0 ? prev - 1 : REFRESH_INTERVAL / 1000);
+      setCountdown(prev => {
+        if (prev <= 0) {
+          fetchData()
+          return REFRESH_INTERVAL / 1000
+        }
+        return prev - 1
+      })
     }, 1000);
     
     return () => clearInterval(timer);
-  }, [loading, REFRESH_INTERVAL, showGeminiRank1Celebration]);
+  }, [loading, showGeminiRank1Celebration]);
 
   // Reset countdown when it reaches zero
   useEffect(() => {
@@ -300,36 +306,36 @@ function App() {
         {!isAppInitialized && <InitialLoader onLoaded={handleAppInitialized} key="initialLoader" />}
       </AnimatePresence>
 
+      {/* Floating circles background effect (adjust z-index if needed) */}
+      <motion.div 
+        className="absolute top-20 right-20 w-64 h-64 rounded-full bg-purple-700/20 blur-xl -z-10"
+        animate={{ 
+          y: [0, 30, 0],
+          scale: [1, 1.1, 1]
+        }}
+        transition={{ 
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+      
+      <motion.div 
+        className="absolute bottom-20 left-40 w-80 h-80 rounded-full bg-blue-700/20 blur-xl -z-10"
+        animate={{ 
+          y: [0, -40, 0],
+          scale: [1, 1.2, 1]
+        }}
+        transition={{ 
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1
+        }}
+      />
+
       {/* Main app content container */}
       <div className={`min-h-screen flex flex-col items-center justify-between py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden w-full text-white transition-opacity duration-500 ${isAppInitialized ? 'opacity-100' : 'opacity-0'}`}>
-        {/* Floating circles background effect (adjust z-index if needed) */}
-        <motion.div 
-          className="absolute top-20 right-20 w-64 h-64 rounded-full bg-purple-700/20 blur-xl -z-10"
-          animate={{ 
-            y: [0, 30, 0],
-            scale: [1, 1.1, 1]
-          }}
-          transition={{ 
-            duration: 15,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        
-        <motion.div 
-          className="absolute bottom-20 left-40 w-80 h-80 rounded-full bg-blue-700/20 blur-xl -z-10"
-          animate={{ 
-            y: [0, -40, 0],
-            scale: [1, 1.2, 1]
-          }}
-          transition={{ 
-            duration: 18,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1
-          }}
-        />
-        
         {/* Page title with typewriter effect */}
         <header className="mb-12 text-center w-full">
           <AnimatedTitle text="are we nytimes yet?" />
@@ -527,19 +533,19 @@ function App() {
         </footer>
         
         {/* Celebration modals */}
-        <AnimatePresence>
-          {showCelebration && hasGeminiSurpassedNYTimes && (
+        {showCelebration && hasGeminiSurpassedNYTimes && (
+          <AnimatePresence>
             <Celebration 
               key="surpassCelebration"
               onClose={handleCloseSurpassCelebration}
               title="YES!"
               message="Gemini has officially surpassed NYTimes in total blockers!"
             />
-          )}
-        </AnimatePresence>
+          </AnimatePresence>
+        )}
         
-        <AnimatePresence>
-          {showRankUpCelebration && (
+        {showRankUpCelebration && (
+          <AnimatePresence>
             <Celebration 
               key="rankUpCelebration"
               onClose={handleCloseRankUpCelebration}
@@ -547,21 +553,21 @@ function App() {
               message={rankToDisplayInCelebration ? `Gemini has moved up to rank #${rankToDisplayInCelebration} in most blocked accounts!` : 'Gemini ranked up!'}
               confettiCount={100}
             />
-          )}
-        </AnimatePresence>
+          </AnimatePresence>
+        )}
         
-        <AnimatePresence>
-          {showGeminiRank1Celebration && (
+        {showGeminiRank1Celebration && (
+          <AnimatePresence>
             <GeminiRank1Celebration 
               key="geminiRank1SuperCelebration"
               onClose={handleCloseGeminiRank1Celebration}
             />
-          )}
-        </AnimatePresence>
+          </AnimatePresence>
+        )}
         
         {/* Count increase notification */}
-        <AnimatePresence>
-          {showCountIncreased && (
+        {showCountIncreased && (
+          <AnimatePresence>
             <motion.div
               className="fixed bottom-4 right-4 bg-green-900/70 text-green-100 px-4 py-2 rounded-lg border border-green-700 shadow-lg"
               initial={{ opacity: 0, y: 20 }}
@@ -570,8 +576,8 @@ function App() {
             >
               <p>Blocker count increased! 📈</p>
             </motion.div>
-          )}
-        </AnimatePresence>
+          </AnimatePresence>
+        )}
       </div>
     </>
   );
