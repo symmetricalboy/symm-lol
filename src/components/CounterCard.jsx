@@ -1,8 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo, useMemo } from 'react';
 import { formatNumber } from '../utils/formatters';
 
-const CounterCard = ({ 
+const CounterCard = memo(({ 
   label, 
   handle,
   value, 
@@ -16,24 +16,24 @@ const CounterCard = ({
 }) => {
   const [displayValue, setDisplayValue] = useState(value);
   const [isAnimating, setIsAnimating] = useState(false);
-  
-  // Animate value change
+  const blueskyUrl = useMemo(() => `https://bsky.app/profile/${handle}`, [handle])
+
   useEffect(() => {
-    if (value !== null && displayValue !== value) {
-      setIsAnimating(true);
-      
-      // Update the display value after animation
-      const timer = setTimeout(() => {
-        setDisplayValue(value);
-        setIsAnimating(false);
-      }, 500);
-      
-      return () => clearTimeout(timer);
-    }
+    if (value === null || displayValue === value) return
+    
+    setIsAnimating(true)
+    const timer = setTimeout(() => {
+      setDisplayValue(value)
+      setIsAnimating(false)
+    }, 500)
+    
+    return () => clearTimeout(timer)
   }, [value, displayValue]);
 
-  // Generate Bluesky URL
-  const blueskyUrl = `https://bsky.app/profile/${handle}`;
+  const hoverAnimation = useMemo(() => ({
+    y: -5,
+    boxShadow: `0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2), 0 0 15px ${glowColor}`
+  }), [glowColor])
 
   return (
     <motion.div
@@ -41,10 +41,7 @@ const CounterCard = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      whileHover={{ 
-        y: -5,
-        boxShadow: `0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2), 0 0 15px ${glowColor}`,
-      }}
+      whileHover={hoverAnimation}
     >
       <div className="counter-label flex gap-2 items-center">
         <a 
@@ -164,6 +161,8 @@ const CounterCard = ({
       />
     </motion.div>
   );
-};
+})
+
+CounterCard.displayName = 'CounterCard'
 
 export default CounterCard; 
